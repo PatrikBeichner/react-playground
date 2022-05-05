@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 function App() {
 
   let weatherUrl = '/api/weather?';
+  let reverseUrl = '/api/reverse?';
 
   const [lat, setLat] = useState('');
   const [lon, setLon] = useState('');
@@ -45,7 +46,18 @@ useEffect(() => {
             console.log(result)
             // console.log(`${process.env.API_URL_WEATHER}latitude=${lat}&longitude=${lon}`)
           })
-          
+
+          await fetch(`${reverseUrl}latitude=${lat}&longitude=${lon}`, {
+            headers : {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          })
+          .then(res=>res.json())
+          .then(result => {
+            setCity(result.name)
+            console.log(result[0].name)
+          })
           // await fetch(`${process.env.API_URL_LOCATION}zip=${zip}&country=${country}`)
           //   .then(res=>res.json())
           //   .then(result => {
